@@ -1,0 +1,21 @@
+# Using the httpYac plugin for VS Code
+# code --install-extension anweber.vscode-httpyac
+
+@http-url = http://localhost:5177
+
+GET {{http-url}}/hello
+
+###
+
+GET {{http-url}}/hello/John%20Smith
+
+###
+
+POST {{http-url}}/echo
+Accept: application/json
+Custom: New-Header
+
+{
+    "custom-body": "Body content",
+    "title": "value"
+}
