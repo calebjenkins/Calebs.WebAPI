@@ -12,6 +12,7 @@
     <PackAsTool>True</PackAsTool>
 	<ToolCommandName>Calebs.WebAPI</ToolCommandName>
 	<PackageOutputPath>../nupkg</PackageOutputPath>
+	<Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
