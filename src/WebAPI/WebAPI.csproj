@@ -6,21 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Description>Dotnet tool of a quick demo web api</Description>
     <Copyright>Caleb Jenkins 2023</Copyright>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!--<PackageReadmeFile>README.md</PackageReadmeFile>
+	  <PackageLicenseFile>LICENSE</PackageLicenseFile>-->
     <RepositoryType>git</RepositoryType>
     <PackageTags>webapi; demo-api;</PackageTags>
     <PackAsTool>True</PackAsTool>
-	<ToolCommandName>Calebs.WebAPI</ToolCommandName>
-	<PackageOutputPath>../nupkg</PackageOutputPath>
-	<Version>0.1.0</Version>
+	  <ToolCommandName>Calebs.WebAPI</ToolCommandName>
+	  <PackageOutputPath>../../nupkg</PackageOutputPath>
+	  <Version>0.1.0</Version>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FakeAuth" Version="2.0.0" />
