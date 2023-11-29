@@ -5,12 +5,14 @@
 
 GET {{http-url}}/hello
 
-###
+?? status == 200
 
+###
 GET {{http-url}}/hello/John%20Smith
 
-###
+?? status == 200
 
+###
 POST {{http-url}}/echo
 Accept: application/json
 Custom: New-Header
@@ -19,3 +21,32 @@ Custom: New-Header
     "custom-body": "Body content",
     "title": "value"
 }
+
+?? status == 200
+
+###
+GET {{http-url}}/Secure
+
+?? status == 403
+
+###
+GET {{http-url}}/FakeToken
+
+{{
+  $global.token=response.body;
+}}
+
+?? status == 200
+
+###
+GET {{http-url}}/echo
+bearer: {{ $global.token }}
+
+?? status == 200
+
+### Secure with hard coded token
+GET {{http-url}}/Secure
+bearer: "fakeToken123xyz"
+
+?? status == 200
+

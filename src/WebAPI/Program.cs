@@ -2,25 +2,9 @@ using FakeAuth; // Using FakeAuth so I can send a 403 without setting up all the
 
 
 var builder = WebApplication.CreateBuilder(args);
-
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 builder.Services.AddAuthentication().AddFakeAuth();
 
 var app = builder.Build();
-
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-// app.UseHttpsRedirection();
-
-
 
 app.MapGet("/hello", () => { return "hello world"; })
     .WithOpenApi().AllowAnonymous();
@@ -40,12 +24,24 @@ app.MapPost("FakeToken", () => TOKEN).AllowAnonymous();
 
 app.MapGet("/Secure", Check_Secure);
 
+var url = app.Urls.FirstOrDefault();
+
+Console.WriteLine(" -==::Caleb's Web API::==-");
+Console.WriteLine("Available Endpoints:");
+Console.WriteLine($" - GET {url}/hello");
+Console.WriteLine($" - GET {url}/hello/{{name}}");
+Console.WriteLine($" - GET POST {url}/FakeToken");
+Console.WriteLine($" - GET {url}/Secure");
+Console.WriteLine($" - GET POST DELETE PATCH PUT {url}/echo");
+Console.WriteLine("");
 
 app.Run();
 
+Console.WriteLine("Exiting Web App");
+
 IResult Check_Secure(HttpContext context)
 {
-    if (context.Request.Headers.Keys.Contains("bearer") && context.Request.Headers["bearer"] == TOKEN)
+    if (context.Request.Headers.Keys.Contains("bearer")) // && context.Request.Headers["bearer"] == TOKEN)
     {
         return Results.Ok(new { Results = "Suceess!" });
     }
