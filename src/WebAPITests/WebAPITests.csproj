@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebAPI\WebAPI.csproj" />
+    <ProjectReference Include="..\WebAPI\Calebs.WebAPI.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 using FakeAuth; // Using FakeAuth so I can send a 403 without setting up all the needed auth infrastructure
-
+using Calebs.Extensions.Console;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication().AddFakeAuth();
@@ -26,13 +26,20 @@ app.MapGet("/Secure", Check_Secure);
 
 var url = app.Urls.FirstOrDefault();
 
-Console.WriteLine(" -==::Caleb's Web API::==-");
+ConsoleColor.Red.WriteLine(" -==::Caleb's Web API::==-");
+Console.WriteLine("");
 Console.WriteLine("Available Endpoints:");
 Console.WriteLine($" - GET {url}/hello");
 Console.WriteLine($" - GET {url}/hello/{{name}}");
 Console.WriteLine($" - GET POST {url}/FakeToken");
 Console.WriteLine($" - GET {url}/Secure");
 Console.WriteLine($" - GET POST DELETE PATCH PUT {url}/echo");
+Console.WriteLine("");
+
+ConsoleColor.Red.Write("Use");
+ConsoleColor.Blue.Write(" --urls=http://localhost:PORT");
+ConsoleColor.Red.WriteLine(" to specifiy local port");
+
 Console.WriteLine("");
 
 app.Run();
