@@ -1,6 +1,22 @@
 # Caleb's WebAPI
 ## a basic Web API useful for testing multiple scenarios - deployed as a console app and dotnet tool.
 
+## Install
+```
+> dotnet tool install --global Calebs.WebAPI
+```
+
+## Usage
+### To start web API app:
+```
+> calebs.webapi
+```
+
+### Optionaly specifiy port to run on:
+```
+> calebs.webapi --urls=http://localhost:PORT
+```
+
 ## Supported Commands:
 
 - GET /hello/
