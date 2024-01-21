@@ -3,18 +3,18 @@
 
 ## Install
 ```
-> dotnet tool install --global Calebs.WebAPI
+dotnet tool install --global Calebs.WebAPI
 ```
 
 ## Usage
 ### To start web API app:
 ```
-> calebs.webapi
+calebs.webapi
 ```
 
 ### Optionaly specifiy port to run on:
 ```
-> calebs.webapi --urls=http://localhost:PORT
+calebs.webapi --urls=http://localhost:PORT
 ```
 
 ## Supported Commands:
@@ -38,8 +38,9 @@ This is why you're here. Echo returns back everything from the request. Includin
 - A set of RESTFUL end-points for `User` objects - backed by an `IKeyValueRepo` for some minimal stateful scenarios.
 - Considering: a set of "admin" end-points to allow dynamically adding new endpoints and supported RESTFUL nouns.
 
-## Usage
-
 
 ## Contribution
+Please submit all PRs to the `develop` branch
 
+## Version History
+- 0.1.0 - intial version. `.NET 7` Installs as a dotnet global tool or run locally as a console web app.

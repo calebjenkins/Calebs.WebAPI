@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Mvc.Testing;
+//using WebAPI;
+
 namespace WebAPITests
 {
-    public class UnitTest1
+    public class WebAPITests
     {
         [Fact]
-        public void Test1()
+        public void Hello_Should_Return_HelloWorld()
         {
-            
+            // var app = new WebApplicationFactory<>();
         }
     }
 }

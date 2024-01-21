@@ -5,12 +5,12 @@
 
 GET {{http-url}}/hello
 
-#?? status == 200
+?? status == 200
 
 ###
 GET {{http-url}}/hello/John%20Smith
 
-#?? status == 200
+?? status == 200
 
 ###
 POST {{http-url}}/echo
@@ -22,14 +22,16 @@ Custom: New-Header
     "title": "value"
 }
 
-#?? status == 200
+?? status == 200
 
 ###
+
 GET {{http-url}}/Secure
 
-#?? status == 403
+?? status == 403
 
 ###
+#@name AuthToken
 GET {{http-url}}/FakeToken
 
 {{
@@ -39,8 +41,10 @@ GET {{http-url}}/FakeToken
 ?? status == 200
 
 ###
+#@ref AuthToken
 GET {{http-url}}/echo
-bearer: {{ $global.token }}
+bearer: {{ AuthToken.response.body }}
+#bearer: {{ $global.token }}
 
 ?? status == 200
 
