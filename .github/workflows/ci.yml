@@ -1,0 +1,70 @@
+on:
+    push:
+        branches:
+            - '!develop'
+            - '!main'
+        paths-ignore:
+            - '**.md'
+    workflow_dispatch:
+
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      timeout-minutes: 15
+  
+      steps:
+          - name: Checkout
+            uses: actions/checkout@v3
+            with:
+                fetch-depth: 0
+          
+          - name: Setup .NET
+            uses: actions/setup-dotnet@v3
+            with:
+                dotnet-version: '8.0.x'
+  
+          - name: Package Restore
+            run: dotnet restore
+  
+          - name: Build
+            run: dotnet build --configuration Release
+  
+          - name: Test
+            #run: dotnet test --configuration Release --no-build
+            run: dotnet test --configuration Release --no-build --filter 'FullyQualifiedName!~BDD_Specs'
+  
+            #- name: Run SpecFlow Tests
+            #  uses: cryptic-wizard/run-specflow-tests@v1.3.1
+            #  with:
+            #     test-assembly-path: src/BDD/BDD_Specs/BDD_Specs/bin/Release/net6.0
+            #     test-assembly-dll: BDD_Specs.dll
+            #     output-html: BDD_SpecResults.html
+            #     no-build: true
+            #     upload-artifact: true
+
+          - name: Echo Branch Name
+            run: echo "Branch name is $GITHUB_REF_NAME "
+
+          - name: Get version
+            id: get_version
+            uses: greenygh0st/net-proj-release-version@v2
+            with:
+                # Filepath of the *.csproj file, relative to root of repository
+                PROJ_FILE: src/WebAPI/Calebs.WebAPI.csproj
+        
+            # env:
+            #   RELEASE_VERSION: ${{ steps.get_version.outputs.RELEASE_VERSION }}
+
+            
+          - name: Show Release Version
+            run: echo "Release Version is ${{steps.get_version.outputs.RELEASE_VERSION}}"
+
+          - name: Set Release Version
+            run: echo "getting version"
+        
+            env:
+                RELEASE_VERSION: steps.get_version.outputs.RELEASE_VERSION
+
+          - name: Print new build number
+            run: echo "Build number is $GITHUB_RUN_NUMBER "
+ 

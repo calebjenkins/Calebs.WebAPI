@@ -1,0 +1,101 @@
+on:
+    push:
+        branches:
+            - 'develop'
+        paths-ignore:
+            - '**.md'
+    workflow_dispatch:
+        inputs:
+          PublishNuget:
+            type: boolean
+            description: Publish to nuget - defaults to true, but can be false for non-publishing scenarios. 
+            default: true
+jobs:
+    build:
+      if: ${{ github.ref == 'refs/heads/develop' }}
+      runs-on: ubuntu-latest
+      timeout-minutes: 15
+  
+      steps:
+          - name: Checkout
+            uses: actions/checkout@v3
+            with:
+                fetch-depth: 0
+          
+          - name: Setup .NET
+            uses: actions/setup-dotnet@v3
+            with:
+                dotnet-version: '7.0.x'
+  
+          - name: Package Restore
+            run: dotnet restore
+  
+          - name: Build
+            run: dotnet build --configuration Release
+  
+          - name: Test
+            #run: dotnet test --configuration Release --no-build
+            run: dotnet test --configuration Release --no-build --filter 'FullyQualifiedName!~BDD_Specs'
+  
+            #- name: Run SpecFlow Tests
+            #  uses: cryptic-wizard/run-specflow-tests@v1.3.1
+            #  with:
+            #     test-assembly-path: src/BDD/BDD_Specs/BDD_Specs/bin/Release/net6.0
+            #     test-assembly-dll: BDD_Specs.dll
+            #     output-html: BDD_SpecResults.html
+            #     no-build: true
+            #     upload-artifact: true
+
+          - name: Echo Branch Name
+            run: echo "Branch name is $GITHUB_REF_NAME "
+            #if: ${{ github.ref == 'refs/heads/main' }}
+
+          - name: Get version
+            id: get_version
+            uses: greenygh0st/net-proj-release-version@v2
+            with:
+                # Filepath of the *.csproj file, relative to root of repository
+                PROJ_FILE: src/WebAPI/Calebs.WebAPI.csproj
+        
+            # env:
+            #   RELEASE_VERSION: ${{ steps.get_version.outputs.RELEASE_VERSION }}
+
+            
+          - name: Show Release Version
+            run: echo "Release Version is ${{steps.get_version.outputs.RELEASE_VERSION}}"
+
+          - name: Set Release Version
+            run: echo "getting version"
+        
+            env:
+                RELEASE_VERSION: steps.get_version.outputs.RELEASE_VERSION
+
+          #- name: Show Release Version
+          #  run: echo "Release Version is ${{steps.get_version.outputs.RELEASE_VERSION}}"
+    
+
+          - name: Print new build number
+            run: echo "Build number is $GITHUB_RUN_NUMBER "
+
+          # workflow_dispatch  pull_request  push
+          - name: Print Triggering github.Event_Name
+            run: echo ${{ github.event_name }}
+                   
+          - name: Detect if workflow is running on origin/Develop
+            id: detect_develop
+            run: git rev-parse HEAD | grep $(git rev-parse origin/develop)
+            continue-on-error: true
+
+          - name: Pack
+            run: dotnet pack --configuration Release /p:Version=${{steps.get_version.outputs.RELEASE_VERSION}}-ci-${GITHUB_RUN_NUMBER} --include-symbols  --output .
+            if: ${{ steps.detect_develop.outcome == 'success' }}
+
+
+          - name: Push to Nuget
+            # if: ${{ steps.detect_develop.outcome == 'success' }}
+            if: ( github.event_name == 'workflow_dispatch' && github.event.inputs.PublishNuget == 'true') || ( github.event_name == 'pull_request' && (!contains(github.event.pull_request.title, 'no-publish'))) || ( github.event_name == 'push' && (!contains(github.event.pull_request.title, 'no-publish')))
+            # run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.FAKEAUTH_NUGET_KEY}}
+            run: dotnet nuget push Calebs.WebAPI.${{steps.get_version.outputs.RELEASE_VERSION}}-ci-${GITHUB_RUN_NUMBER}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_KEY}}
+
+
+ 
