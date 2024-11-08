@@ -5,6 +5,8 @@
 ```
 dotnet tool install --global Calebs.WebAPI
 ```
+See the latest package details on [nuget](https://nuget.org/packages/calebs.webapi)
+
 
 ## Usage
 ### To start web API app:
