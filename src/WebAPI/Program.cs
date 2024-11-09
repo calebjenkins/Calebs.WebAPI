@@ -1,35 +1,54 @@
-using FakeAuth; // Using FakeAuth so I can send a 403 without setting up all the needed auth infrastructure
+using System.Reflection;
+using FakeAuth; 
 using Calebs.Extensions.Console;
-using Calebs.Extensions;
 
-//namespace Calebs.WebAPI;
 
+// Let's get started! 
 var builder = WebApplication.CreateBuilder(args);
+
+// Using FakeAuth so we can send 403s without all the auth hassel
 builder.Services.AddAuthentication().AddFakeAuth();
 
 var app = builder.Build();
 
+// Hello Endpoints
 app.MapGet("/hello", () => { return "hello world"; })
     .WithOpenApi().AllowAnonymous();
 
 app.MapGet("/hello/{name}", (string name) => { return $"hello {name}"; })
         .WithOpenApi().AllowAnonymous();
 
+// Echo Endpoints
 app.MapGet("/echo", Echo_Result);
 app.MapPost("/echo", Echo_Result);
 app.MapDelete("/echo", Echo_Result);
 app.MapPatch("/echo", Echo_Result);
 app.MapPut("/echo", Echo_Result);
 
+// Secure Endpoints
 const string TOKEN = "fakeToken123xyz";
 app.MapGet("FakeToken", () => TOKEN).AllowAnonymous();
 app.MapPost("FakeToken", () => TOKEN).AllowAnonymous();
 
 app.MapGet("/Secure", Check_Secure);
 
-var url = app.Urls.FirstOrDefault();
-var ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+// Set Up Model/Data end points
+if(args.Contains("--models"))
+{
+    app.MapGet("/test", () => { return "testing 123"; })
+        .WithOpenApi().AllowAnonymous();
+}
 
+
+// *********************
+// **  Splash Screen  **
+// *********************
+
+// This is since we are deploying as a dotnet tool. 
+// So we want to provide some context when this is run.
+
+var url = app.Urls.FirstOrDefault();
+var ver = Assembly.GetExecutingAssembly().GetName().Version;
 
 ConsoleColor.Red.WriteLine(" -==::Caleb's Web API::==-");
 ConsoleColor.Blue.Write($"version: {ver}");
@@ -49,10 +68,14 @@ ConsoleColor.Red.WriteLine(" to specifiy local port");
 
 Console.WriteLine("");
 
+// Run this thing. 
 app.Run();
 
+// bye!
 Console.WriteLine("Exiting Web App");
 
+
+// Secure Endpoint
 IResult Check_Secure(HttpContext context)
 {
     if (context.Request.Headers.Keys.Contains("bearer")) // && context.Request.Headers["bearer"] == TOKEN)
@@ -63,6 +86,7 @@ IResult Check_Secure(HttpContext context)
     return Results.Forbid();
 }
 
+// Echo Endpoint
 IResult Echo_Result(HttpContext context)
 {
     var header = context.Request.Headers;
@@ -78,6 +102,7 @@ IResult Echo_Result(HttpContext context)
     return results;
 }
 
+// streams are weird.. 
 async Task<string> StreamToString(Stream stream)
 {
     var reader = new StreamReader(stream);
@@ -85,6 +110,6 @@ async Task<string> StreamToString(Stream stream)
     return result;
 }
 
-public partial class Program
-{ } // needed for test visability
+// needed for test visability
+public partial class Program { }
 
