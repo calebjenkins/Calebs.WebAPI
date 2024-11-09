@@ -15,6 +15,8 @@
 		<PackageOutputPath>../../nupkg</PackageOutputPath>
 		<Version>1.0.0</Version>
 		<IsPackable>true</IsPackable>
+		<PackageProjectUrl>https://github.com/calebjenkins/calebs.webapi/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/calebjenkins/Calebs.WebAPI.git</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -33,8 +35,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\..\README.md" Pack="true" PackagePath=""/>
-		<None Include="..\..\LICENSE" Pack="true" PackagePath=""/>
+		<None Include="..\..\README.md" Pack="true" PackagePath="" />
+		<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
 	</ItemGroup>
 
 </Project>

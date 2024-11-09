@@ -1,6 +1,8 @@
 using FakeAuth; // Using FakeAuth so I can send a 403 without setting up all the needed auth infrastructure
 using Calebs.Extensions.Console;
 
+//namespace Calebs.WebAPI;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication().AddFakeAuth();
 
@@ -50,7 +52,7 @@ IResult Check_Secure(HttpContext context)
 {
     if (context.Request.Headers.Keys.Contains("bearer")) // && context.Request.Headers["bearer"] == TOKEN)
     {
-        return Results.Ok(new { Results = "Suceess!" });
+        return Results.Ok(new { Results = "Success!" });
     }
 
     return Results.Forbid();
@@ -77,3 +79,7 @@ async Task<string> StreamToString(Stream stream)
     var result = await reader.ReadToEndAsync();
     return result;
 }
+
+public partial class Program
+{ } // needed for test visability
+
