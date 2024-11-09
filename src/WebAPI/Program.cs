@@ -1,5 +1,6 @@
 using FakeAuth; // Using FakeAuth so I can send a 403 without setting up all the needed auth infrastructure
 using Calebs.Extensions.Console;
+using Calebs.Extensions;
 
 //namespace Calebs.WebAPI;
 
@@ -27,8 +28,12 @@ app.MapPost("FakeToken", () => TOKEN).AllowAnonymous();
 app.MapGet("/Secure", Check_Secure);
 
 var url = app.Urls.FirstOrDefault();
+var ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+
 
 ConsoleColor.Red.WriteLine(" -==::Caleb's Web API::==-");
+ConsoleColor.Blue.Write($"version: {ver}");
+ConsoleColor.Blue.WriteLine(" --- more info at https://github.com/calebjenkins/calebs.webapi/ ");
 Console.WriteLine("");
 Console.WriteLine("Available Endpoints:");
 Console.WriteLine($" - GET {url}/hello");
