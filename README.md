@@ -47,3 +47,4 @@ Please submit all PRs to the `develop` branch
 ## Version History
 - 0.1.0 - intial version. `.NET 7` Installs as a dotnet global tool or run locally as a console web app.
 - 1.0.0 - official release. New features coming soon! 
+- 1.0.1 - added unit tests and version info on launch text
