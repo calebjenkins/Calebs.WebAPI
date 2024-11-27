@@ -1,6 +1,8 @@
 using System.Reflection;
+using CommandLine;
 using FakeAuth; 
 using Calebs.Extensions.Console;
+using Calebs.WebAPI;
 
 
 // Let's get started! 
@@ -10,6 +12,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication().AddFakeAuth();
 
 var app = builder.Build();
+
+// Using CommandLine Parcer nuget package
+var parser = new Parser((x) =>
+{
+    x.IgnoreUnknownArguments = true;
+    x.CaseSensitive = false;
+});
+var opt = parser.ParseArguments<Options>(args).Value;
+
+if (opt != null && opt.ProcessModels)
+{
+    
+}
+
+
 
 // Hello Endpoints
 app.MapGet("/hello", () => { return "hello world"; })

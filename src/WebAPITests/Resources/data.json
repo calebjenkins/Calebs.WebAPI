@@ -1,0 +1,35 @@
+{
+    "Employee":
+    [
+        {
+            "name": "Joe Smith",
+            "age": 21,
+            "id": "007"
+        },
+        {
+            "name": "Phil Keller",
+            "age": 92,
+            "id": "123"
+        },
+        {
+            "name": "Adam Sandler",
+            "age": 45,
+            "id": "010"
+        }
+    ],
+    "Movie":
+    [
+        {
+            "title": "007 James Bond",
+            "year": 2025
+        },
+        {
+            "title": "Jurassic Park",
+            "year": 2018
+        },
+        {
+            "title": "What About Bob?",
+            "year": 1992
+        }
+    ]
+}
